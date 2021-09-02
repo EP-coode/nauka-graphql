@@ -1,12 +1,13 @@
 const express = require('express')
 const { graphqlHTTP } = require('express-graphql')
 const { buildSchema } = require('graphql')
+const moongose = require('mongoose')
+
+const Event = require('./models/event')
 
 const app = express()
 
 app.use(express.json())
-
-const events = []
 
 app.use('/graphql', graphqlHTTP({
     schema: buildSchema(`
@@ -22,6 +23,7 @@ app.use('/graphql', graphqlHTTP({
             title: String!
             description: String!
             price: Float!
+            date: String!
         }
 
         type RootQuery {
@@ -39,21 +41,43 @@ app.use('/graphql', graphqlHTTP({
     `),
     rootValue: {
         events: () => {
-            return events
+            return Event.find().then(events => {
+                return events.map(e => {
+                    return {...e._doc}
+                })
+            }).catch(err => {
+                throw err
+            })
         },
         createEvent: (args) => {
-            const event = {
-                _id: Math.random().toString(),
-                ...args.eventInput,
-                date: new Date().toISOString(),
-            }
-            events.push(event)
-            return event
+            const { title, description, price, date } = args.eventInput
+            const event = new Event({
+                title: title,
+                description: description,
+                price: price,
+                date: new Date()
+            })
+
+            return event.save().then(result => {
+                console.log(result);
+                return { ...result._doc }
+            }).catch(err => {
+                console.log(err);
+                throw err
+            })
         }
     },
     graphiql: true
 }))
 
-app.listen(3000, () => {
-    console.log(`Listening on http://localhost:3000`);
-})
+const { MONGO_USER, MONGO_PASSWORD, MONGO_HOST, MONGO_DB } = process.env
+
+
+moongose.connect(`mongodb://${MONGO_HOST}/${MONGO_DB}`)
+    .then(() => {
+        app.listen(3000, () => {
+            console.log(`Listening on http://localhost:3000`);
+        })
+    }).catch(err => {
+        console.log(err);
+    })
