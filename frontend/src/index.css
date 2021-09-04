@@ -1,3 +1,7 @@
+:root{
+  --bg-primary: rgb(29, 167, 209)
+}
+
 body {
   margin: 0;
   padding: 0;
