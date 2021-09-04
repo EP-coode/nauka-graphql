@@ -8,19 +8,24 @@ module.exports = {
         const events = await Event.find()
         return events.map(event => transformEvent(event))
     },
-    createEvent: async args => {
+    createEvent: async (args, req) => {
+
+        if(!req.isAuth){
+            throw new Error('Unauthenticated')
+        }
+
         const { title, description, price, date } = args.eventInput
         const event = new Event({
             title: title,
             description: description,
             price: price,
             date: dateToIsoString(date),
-            creator: '61308f620344414c855b4cb0' // temp hardcode
+            creator: req.userId // temp hardcode
         })
 
         let createdEvent = await event.save()
 
-        const foundUser = await User.findById('61308f620344414c855b4cb0') // temp hardcode
+        const foundUser = await User.findById(req.userId) // temp hardcode
 
         if (!foundUser) {
             throw new Error('User not exists')

@@ -1,0 +1,31 @@
+POST http://localhost:3000/graphql
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MTMzMjJkMWIxNjY3Njk0OGM4MTVkMGYiLCJlbWFpbCI6ImVtYWlsIiwiaWF0IjoxNjMwNzQyNDY5LCJleHAiOjE2MzA3NDYwNjl9.fXzXmOMB4dE6NJ0RQk0voc1hlzwYFGf9ZTbHHMUW9YM
+Content-Type: application/json
+X-REQUEST-TYPE: GraphQL
+
+mutation{
+    createEvent(eventInput: {title:"test3",description:"desc",price: 2334.33, date: "2021-09-04T07:56:45.909Z"}){
+        title
+        description
+        price
+        date
+        creator{
+            email
+        }
+    }
+}
+
+###
+
+POST http://localhost:3000/graphql
+Content-Type: application/json
+X-REQUEST-TYPE: GraphQL
+
+query{
+    events{
+    title
+    creator{
+      email
+    }
+  }
+}
