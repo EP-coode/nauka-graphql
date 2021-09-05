@@ -22,11 +22,12 @@ main{
 .form{
     width: 25rem;
     max-width: 80%;
-    margin: 5rem auto;
+    margin: 1rem auto;
 }
 
 .form__control label,
-.form__control input
+.form__control input,
+.form__control textarea
 {
     width: 100%;
     display: block;

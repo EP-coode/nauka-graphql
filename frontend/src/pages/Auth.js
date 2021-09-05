@@ -1,6 +1,7 @@
 import React, { useContext, useRef, useState } from 'react';
 
 import { AuthContext } from '../context/auth-context';
+import '../App.css'
 import './Auth.css'
 
 function AuthPage() {
@@ -61,7 +62,7 @@ function AuthPage() {
             console.log(resData);
             if (resData.data.login.token) {
                 const { userId, token, tokenExpiration } = resData.data.login
-                authContext.login(userId, token, tokenExpiration)
+                authContext.login(token, userId, tokenExpiration)
             }
         }).catch(err => {
             console.error(err)
@@ -74,7 +75,7 @@ function AuthPage() {
     }
 
     return (
-        <form className="form">
+        <form className="form auth-form">
             <div className="form__control">
                 <label htmlFor="email">E-mail</label>
                 <input type="email" id="email" ref={inputEmail}></input>
