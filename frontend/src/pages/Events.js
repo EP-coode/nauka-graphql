@@ -2,8 +2,9 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 
 import Modal from '../components/Modal/Modal';
 import Backdrop from '../components/Backdrop/Backdrop';
-import './Events.css'
+import EventList from '../components/Events/EventList/EventList'
 import { AuthContext } from '../context/auth-context';
+import './Events.css'
 
 function EventsPage() {
     const inputTitleRef = useRef(null)
@@ -11,6 +12,7 @@ function EventsPage() {
     const inputPriceRef = useRef(null)
     const inputDateRef = useRef(null)
     const [creatingEvent, setCreatingEvent] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
     const [events, setEvents] = useState([])
     const authContext = useContext(AuthContext)
 
@@ -61,12 +63,18 @@ function EventsPage() {
             return res.json()
         }).then(resData => {
             console.log(resData.data.events);
+            event._id = authContext.userId
+            event.creator = {
+                _id: authContext.userId,
+            }
+            setEvents(events => [...events, event])
         }).catch(err => {
             console.error(err)
         })
     }
 
     const fetchEvents = () => {
+        setIsLoading(true)
         const requestBody = {
             query: `
                 query{
@@ -100,9 +108,10 @@ function EventsPage() {
         }).then(resData => {
             console.log(resData);
             setEvents(resData.data.events)
-            debugger
+            setIsLoading(false)
         }).catch(err => {
             console.error(err)
+            setIsLoading(false)
         })
     }
 
@@ -111,12 +120,6 @@ function EventsPage() {
     }
 
     useEffect(fetchEvents, [])
-
-    const eventList = events.map(event => (
-        <li className="events__list-item" key={event._id}>
-            {event.title}
-        </li>
-    ))
 
     return (
         <div className="events">
@@ -130,7 +133,7 @@ function EventsPage() {
                 >
                     <form className="form">
                         <div className="form__control">
-                            <label htmlFor="title">E-mail</label>
+                            <label htmlFor="title">title</label>
                             <input type="text" id="title" ref={inputTitleRef}></input>
                         </div>
                         <div className="form__control">
@@ -157,10 +160,7 @@ function EventsPage() {
                     </button>
                 </div>
             }
-            <ul className="events__list">
-                {eventList}
-            </ul>
-
+            {isLoading ? <div className="lds-dual-ring"></div> : <EventList events={events} />}
         </div>
     )
 }
