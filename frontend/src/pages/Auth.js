@@ -74,20 +74,20 @@ function AuthPage() {
     }
 
     return (
-        <form className="auth-form">
-            <div className="auth-form__control">
+        <form className="form">
+            <div className="form__control">
                 <label htmlFor="email">E-mail</label>
                 <input type="email" id="email" ref={inputEmail}></input>
             </div>
-            <div className="auth-form__control">
+            <div className="form__control">
                 <label htmlFor="password">password</label>
                 <input type="password" id="password" ref={inputPasswd}></input>
             </div>
-            <div className="auth-form__actions">
-                <button type="button" onClick={handleSwitchMode}>
+            <div className="form__actions">
+                <button className="btn" type="button" onClick={handleSwitchMode}>
                     Go to {!loginMode ? "Login" : "Sign up"}
                 </button>
-                <button type="button" onClick={submitHandler}>
+                <button className="btn" type="button" onClick={submitHandler}>
                     {loginMode ? "Login" : "Sign up"}
                 </button>
             </div>

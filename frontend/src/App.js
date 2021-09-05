@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom'
 
 import AuthPage from './pages/Auth'
 import BookingPage from './pages/Booking'
-import EventsPAge from './pages/Events'
+import EventsPage from './pages/Events'
 import MainNavigation from './components/Navigation/MainNavigation';
 import { AuthContext } from './context/auth-context'
 
@@ -18,21 +18,12 @@ function App() {
         <MainNavigation />
         <main>
           <Switch>
-            {
-              authContext.token ?
-                <React.Fragment>
-                  <Redirect from="/" to="/events" exact/>
-                  <Redirect from="/auth" to="/events" exact/>
-                  <Route path="/bookings" component={BookingPage}/>
-                </React.Fragment>
-                :
-                <React.Fragment>
-                  <Redirect from="/" to="/auth" exact/>
-                  <Redirect from="/bookings" to="/auth" exact/>
-                  <Route path="/auth" component={AuthPage}/>
-                  <Route path="/events" component={EventsPAge}/>
-                </React.Fragment>
-            }
+            {authContext.token && <Redirect from="/" to="/events" exact /> }
+            {authContext.token && <Redirect from="/auth" to="/events" exact /> }
+            {!authContext.token && <Route path="/auth" component={AuthPage} /> }
+            <Route path="/events" component={EventsPage} />
+            {authContext.token && <Route path="/bookings" component={BookingPage}/>}
+            {!authContext.token && <Redirect to="/auth" exact />}
           </Switch>
         </main>
       </React.Fragment>

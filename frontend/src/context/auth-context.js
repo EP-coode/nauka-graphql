@@ -13,7 +13,6 @@ function AuthProvider({ children }) {
     const [tokenExp, setTokenExp] = useState(null)
 
     const login = (token, userId, tokenExpiration) => {
-        debugger
         setToken(token)
         setUserId(userId)
         setTokenExp(tokenExpiration)

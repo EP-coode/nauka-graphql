@@ -1,3 +1,42 @@
 main{
     margin-top: 3.5rem;   
 }
+
+.btn{
+    background-color:  var(--bg-primary);
+    font: inherit;
+    border: 1px solid rgb(18, 172, 172);
+    border-radius: 3px;
+    padding: 0.5rem 1rem;
+    margin-right: 1rem;
+    box-shadow: 1px 1px 1px rgb(8, 194, 241);
+    color: white;
+    cursor: pointer;
+}
+
+.btn:hover,
+.btn:active{
+    background-color: rgb(1, 116, 116);
+}
+
+.form{
+    width: 25rem;
+    max-width: 80%;
+    margin: 5rem auto;
+}
+
+.form__control label,
+.form__control input
+{
+    width: 100%;
+    display: block;
+}
+
+.form__control label
+{
+    margin: 0.5rem 0;
+}
+
+.form__control{
+    margin: 1rem 0;
+}
