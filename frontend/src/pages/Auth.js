@@ -1,11 +1,13 @@
-import React, { useRef, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 
+import { AuthContext } from '../context/auth-context';
 import './Auth.css'
 
 function AuthPage() {
     const inputEmail = useRef(null)
     const inputPasswd = useRef(null)
     const [loginMode, setLoginMode] = useState(true)
+    const authContext = useContext(AuthContext)
 
     const submitHandler = e => {
         e.preventDefault()
@@ -57,6 +59,10 @@ function AuthPage() {
             return res.json()
         }).then(resData => {
             console.log(resData);
+            if (resData.data.login.token) {
+                const { userId, token, tokenExpiration } = resData.data.login
+                authContext.login(userId, token, tokenExpiration)
+            }
         }).catch(err => {
             console.error(err)
         })
