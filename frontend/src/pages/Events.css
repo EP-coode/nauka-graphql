@@ -1,0 +1,8 @@
+.events{
+    text-align: center;
+    border: 1px solid var(--bg-primary);
+    padding: 1rem;
+    margin: 5rem auto;
+    width: 30rem;
+    max-width: 80%;
+}
