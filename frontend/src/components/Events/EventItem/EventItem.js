@@ -4,7 +4,7 @@ import { AuthContext } from '../../../context/auth-context';
 import './EventItem.css'
 
 
-function EventItem({ title, price, creatorId, description, date, eventId, onDetail = ()=>{}}) {
+function EventItem({ title, price, creatorId, description, date, eventId, creatorEmail, onDetail = () => { } }) {
     const authContext = useContext(AuthContext)
     const isOwner = creatorId === authContext.userId
 
@@ -19,7 +19,7 @@ function EventItem({ title, price, creatorId, description, date, eventId, onDeta
                     isOwner ?
                         <p>You are the owner</p>
                         :
-                        <button className="btn" onClick={()=>onDetail(eventId)}>View Details</button>
+                        <button className="btn" onClick={() => onDetail(eventId)}>View Details</button>
                 }
             </div>
         </li>

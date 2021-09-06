@@ -55,13 +55,16 @@ function BookingPage() {
         setIsLoading(true)
         const requestBody = {
             query: `
-                mutation{
-                    cancelBooking(bookingId: "${bookingId}"){
+                mutation CancelBooking($id: ID!) {
+                    cancelBooking(bookingId: $id){
                         _id
                         title
                     }
                 }
-            `
+            `,
+            variables: {
+                id: bookingId
+            }
         }
 
         fetch('http://localhost:3000/graphql', {
@@ -80,7 +83,7 @@ function BookingPage() {
             setIsLoading(false)
             if (mounted) {
                 console.log(resData);
-                setBookings(bookings => bookings.filter(booking=>booking._id!==bookingId))
+                setBookings(bookings => bookings.filter(booking => booking._id !== bookingId))
             }
         }).catch(err => {
             console.error(err)

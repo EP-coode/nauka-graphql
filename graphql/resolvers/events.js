@@ -1,7 +1,7 @@
 const Event = require('../../models/event')
 const User = require('../../models/user')
 const { dateToIsoString } = require('../../helpers/date')
-const { transformEvent } = require('./helpers')
+const { transformEvent } = require('./merge')
 
 module.exports = {
     events: async () => {

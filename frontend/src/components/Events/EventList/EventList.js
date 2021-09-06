@@ -46,6 +46,7 @@ function EventList({ events = [] , onBookEvent}) {
                     >
                         <h2>{selectedEvent.price + " $"} - {new Date(selectedEvent.date).toLocaleDateString()}</h2>
                         <p>{selectedEvent.description}</p>
+                        <p>{selectedEvent.creator.email}</p>
                     </Modal>
                 </React.Fragment>
             }
