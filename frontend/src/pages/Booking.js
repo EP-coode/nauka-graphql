@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState, useRef } from 'react';
 import { AuthContext } from '../context/auth-context';
 
 import Spinner from '../components/Spinner/Spinner';
+import BookingList from '../components/BookingList/BookingList';
 
 function BookingPage() {
     const authContext = useContext(AuthContext)
@@ -50,6 +51,42 @@ function BookingPage() {
         })
     }
 
+    const handleDeleteBooking = bookingId => {
+        setIsLoading(true)
+        const requestBody = {
+            query: `
+                mutation{
+                    cancelBooking(bookingId: "${bookingId}"){
+                        _id
+                        title
+                    }
+                }
+            `
+        }
+
+        fetch('http://localhost:3000/graphql', {
+            method: 'POST',
+            body: JSON.stringify(requestBody),
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${authContext.token}`
+            }
+        }).then(res => {
+            if (res.status !== 200 && res.status !== 201) {
+                throw new Error('Fail')
+            }
+            return res.json()
+        }).then(resData => {
+            setIsLoading(false)
+            if (mounted) {
+                console.log(resData);
+                setBookings(bookings => bookings.filter(booking=>booking._id!==bookingId))
+            }
+        }).catch(err => {
+            console.error(err)
+        })
+    }
+
     useEffect(() => {
         mounted.current = true
         fetchBookings()
@@ -58,18 +95,12 @@ function BookingPage() {
         }
     }, [])
 
-    const bookingsElem = bookings.map(booking => (
-        <li key={booking._id}>
-            {new Date(booking.createdAt).toLocaleDateString()} - {booking.event.title}
-        </li>
-    ))
-
     return (
         <React.Fragment>
             {isLoading ? <Spinner />
                 : <div className="booking">
                     <h1>Booking Page</h1>
-                    <ul>{bookingsElem}</ul>
+                    <BookingList bookings={bookings} onCancelBooking={handleDeleteBooking} />
                     {isLoading && "Loading..."}
                 </div>}
         </React.Fragment>

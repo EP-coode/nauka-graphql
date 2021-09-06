@@ -9,7 +9,7 @@ module.exports = {
             throw new Error('Unauthenticated')
         }
 
-        const bookings = await Booking.find()
+        const bookings = await Booking.find({user: req.userId})
         return bookings.map(booking => transformBooking(booking))
     },
     bookEvent: async (args, req) => {
@@ -18,7 +18,7 @@ module.exports = {
             throw new Error('Unauthenticated')
         }
 
-        const fetchedID = await Event.findOne({ _id: args.eventId })
+        const fetchedID = await Event.findOne({ _id: args.eventId, user: req.userId})
         const booking = new Booking({
             user: req.userId, // temp hardcode
             event: fetchedID

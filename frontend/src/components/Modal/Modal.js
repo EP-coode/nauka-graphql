@@ -4,7 +4,7 @@ import './Modal.css'
 
 const Modal = ({ title, children, onCancel, onConfirm, cancelText = "Cancel", confirmText = "Confirm" }) => (
     <div className="modal">
-        <header className="modal__header" r>{title}</header>
+        <header className="modal__header">{title}</header>
         <section className="modal__content">
             {children}
         </section>
