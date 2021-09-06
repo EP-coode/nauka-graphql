@@ -16,6 +16,7 @@ function EventsPage() {
     const [isLoading, setIsLoading] = useState(false)
     const [events, setEvents] = useState([])
     const authContext = useContext(AuthContext)
+    const mounted = useRef(false)
 
     const createEventClickHandler = e => {
         e.preventDefault()
@@ -107,9 +108,11 @@ function EventsPage() {
             }
             return res.json()
         }).then(resData => {
-            console.log(resData);
-            setEvents(resData.data.events)
-            setIsLoading(false)
+            if (mounted) {
+                console.log(resData);
+                setEvents(resData.data.events)
+                setIsLoading(false)
+            }
         }).catch(err => {
             console.error(err)
             setIsLoading(false)
@@ -120,7 +123,47 @@ function EventsPage() {
         setCreatingEvent(false)
     }
 
-    useEffect(fetchEvents, [])
+    const bookEventHandler = eventId => {
+        console.log(eventId);
+        const requestBody = {
+            query: `
+                mutation{
+                    bookEvent(eventId: "${eventId}"){
+                        _id
+                        createdAt
+                        updatedAt
+                    }
+                }
+            `
+        }
+
+        fetch('http://localhost:3000/graphql', {
+            method: 'POST',
+            body: JSON.stringify(requestBody),
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${authContext.token}`
+            }
+        }).then(res => {
+            if (res.status !== 200 && res.status !== 201) {
+                throw new Error('Fail')
+            }
+            return res.json()
+        }).then(resData => {
+            console.log(resData);
+        }).catch(err => {
+            console.error(err)
+        })
+    }
+
+    useEffect(() => {
+        mounted.current = true
+        fetchEvents()
+        return () => {
+            mounted.current = false
+        }
+    }, [])
+
 
     return (
         <div className="events">
@@ -161,7 +204,10 @@ function EventsPage() {
                     </button>
                 </div>
             }
-            {isLoading ? <Spinner className="events__spinner"/> : <EventList events={events} />}
+            {isLoading ?
+                <Spinner className="events__spinner" />
+                : <EventList events={events} onBookEvent={bookEventHandler}
+                />}
         </div>
     )
 }

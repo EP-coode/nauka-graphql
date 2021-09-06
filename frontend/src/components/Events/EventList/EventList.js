@@ -3,15 +3,16 @@ import React, { useContext, useState } from 'react';
 import EventItem from '../EventItem/EventItem'
 import Backdrop from '../../Backdrop/Backdrop';
 import Modal from '../../Modal/Modal';
+import { AuthContext } from '../../../context/auth-context';
 import './EventList.css'
 
 function EventList({ events = [] , onBookEvent}) {
     const [selectedEvent, setSelectedEvent] = useState(null)
+    const authContext = useContext(AuthContext)
 
     const showDetailsHandler = eventId => {
         const event = events.find(e => e._id === eventId)
         setSelectedEvent(event)
-        debugger
     }
 
     const eventList = events.map(event => (
@@ -40,7 +41,7 @@ function EventList({ events = [] , onBookEvent}) {
                         title={selectedEvent.title}
                         onCancel={() => setSelectedEvent(null)}
                         cancelText={"Close"}
-                        onConfirm={()=>onBookEvent(selectedEvent._id)}
+                        onConfirm={authContext.token ? ()=>onBookEvent(selectedEvent._id) : null}
                         confirmText={"Book"}
                     >
                         <h2>{selectedEvent.price + " $"} - {new Date(selectedEvent.date).toLocaleDateString()}</h2>
