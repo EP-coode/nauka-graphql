@@ -16,6 +16,7 @@
 }
 
 .event__list-item h2{
+    color: rgb(102, 101, 101);
     margin: 0;
     font-size: 1rem;
 }

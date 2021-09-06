@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import Modal from '../components/Modal/Modal';
 import Backdrop from '../components/Backdrop/Backdrop';
 import EventList from '../components/Events/EventList/EventList'
+import Spinner from '../components/Spinner/Spinner';
 import { AuthContext } from '../context/auth-context';
 import './Events.css'
 
@@ -160,7 +161,7 @@ function EventsPage() {
                     </button>
                 </div>
             }
-            {isLoading ? <div className="lds-dual-ring"></div> : <EventList events={events} />}
+            {isLoading ? <Spinner className="events__spinner"/> : <EventList events={events} />}
         </div>
     )
 }
