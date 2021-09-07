@@ -9,7 +9,19 @@ const eventLoader = new DataLoader((eventIds) => {
 })
 
 const events = async eventIds => {
+    // dataloader potrzebuje tej samej kolejniosci danych wyjściowych co kolejność odpowiadającym
+    // im indeksom wejściowych. Mongose nie gwarantuje tej kolejności
     const events = await Event.find({ _id: { $in: eventIds } })
+    // const beg = new Date().getMilliseconds()
+    // const sortedEvents = eventIds.map(id => {
+    //     return events.find(event => event._id.toString() === id)
+    // })
+    // wbudowany sort jest szybszy pomimo gorszej złożoności
+    events.sort((a, b) => {
+        const z = a._id.toString();
+        return eventIds.indexOf(a._id.toString()) - eventIds.indexOf(b._id.toString())
+    })
+    // console.log("Time: ", new Date().getMilliseconds() - beg, 'ms');
     return events.map(event => transformEvent(event))
 }
 
@@ -25,7 +37,7 @@ const userByID = async userID => {
     return {
         ...user._doc,
         password: null,
-        createdEvents: () => eventLoader.loadMany(user._doc.createdEvents.map(e=>e.toString()))
+        createdEvents: () => eventLoader.loadMany(user._doc.createdEvents.map(e => e.toString()))
     }
 }
 

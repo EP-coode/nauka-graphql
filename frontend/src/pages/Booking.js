@@ -3,12 +3,15 @@ import { AuthContext } from '../context/auth-context';
 
 import Spinner from '../components/Spinner/Spinner';
 import BookingList from '../components/BookingList/BookingList';
+import './Booking.css'
+import Chart from '../components/BookingsChart/Chart';
 
 function BookingPage() {
     const authContext = useContext(AuthContext)
     const [isLoading, setIsLoading] = useState(false)
     const [bookings, setBookings] = useState([])
     const mounted = useRef(false)
+    const [outputType, setOutputType] = useState('list')
 
     const fetchBookings = () => {
         setIsLoading(true)
@@ -22,6 +25,7 @@ function BookingPage() {
                             _id
                             title
                             date
+                            price
                         }
                     }
                 }
@@ -90,6 +94,15 @@ function BookingPage() {
         })
     }
 
+    const changeTabHandler = outputType => {
+        if (outputType === 'list') {
+            setOutputType('list')
+        }
+        else {
+            setOutputType('chart')
+        }
+    }
+
     useEffect(() => {
         mounted.current = true
         fetchBookings()
@@ -98,15 +111,35 @@ function BookingPage() {
         }
     }, [])
 
+
+    let content = <Spinner />
+    if (!isLoading) {
+        content = (
+            <React.Fragment>
+                <div className="bookings__nav">
+                    <button
+                        className={`bookings__nav-item ${outputType === 'list' && '--active'}`}
+                        onClick={() => changeTabHandler('list')}>
+                        List
+                    </button>
+                    <button
+                        className={`bookings__nav-item ${outputType === 'chart' && '--active'}`}
+                        onClick={() => changeTabHandler('chart')}>
+                        Chart
+                    </button>
+                </div>
+                {outputType === 'list'
+                    ? <BookingList bookings={bookings} onCancelBooking={handleDeleteBooking} />
+                    : <Chart bookings={bookings} />
+                }
+            </React.Fragment>
+        )
+    }
+
     return (
-        <React.Fragment>
-            {isLoading ? <Spinner />
-                : <div className="booking">
-                    <h1>Booking Page</h1>
-                    <BookingList bookings={bookings} onCancelBooking={handleDeleteBooking} />
-                    {isLoading && "Loading..."}
-                </div>}
-        </React.Fragment>
+        <div className="bookings">
+            {content}
+        </div>
     )
 }
 

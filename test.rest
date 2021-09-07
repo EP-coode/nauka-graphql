@@ -1,10 +1,10 @@
 POST http://localhost:3000/graphql
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MTMzMjJkMWIxNjY3Njk0OGM4MTVkMGYiLCJlbWFpbCI6ImVtYWlsIiwiaWF0IjoxNjMwNzQyNDY5LCJleHAiOjE2MzA3NDYwNjl9.fXzXmOMB4dE6NJ0RQk0voc1hlzwYFGf9ZTbHHMUW9YM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MTM2NGVhYjQ4OGJkNTg4MmVlYmM1ZGIiLCJlbWFpbCI6InRlc3RAdGVzdC5wbCIsImlhdCI6MTYzMTAxMzc0OCwiZXhwIjoxNjMxMDE3MzQ4fQ.3acXk0QFGkd4XYwhW0N4Ovc6XjBtZRlO6Vbhrq8ORmw
 Content-Type: application/json
 X-REQUEST-TYPE: GraphQL
 
 mutation{
-    createEvent(eventInput: {title:"test3",description:"desc",price: 2334.33, date: "2021-09-04T07:56:45.909Z"}){
+    createEvent(eventInput: {title:"test5",description:"desc",price: 2334.33, date: "2021-09-04T07:56:45.909Z"}){
         title
         description
         price
@@ -13,6 +13,18 @@ mutation{
             email
         }
     }
+}
+
+### 
+
+POST http://localhost:3000/graphql
+Content-Type: application/json
+X-REQUEST-TYPE: GraphQL
+
+query{
+  login(email: "test@test.pl", password: "pass"){
+    token
+  }
 }
 
 ###

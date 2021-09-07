@@ -1,0 +1,22 @@
+.bookings{
+
+}
+
+.bookings__nav{
+    text-align: center;
+    padding: .5rem;
+}
+
+.bookings__nav-item{
+    font: inherit;
+    border: none;
+    background: transparent;
+    color: black;
+    padding: 0.25rem 1rem;
+    border-bottom: 0.25rem solid transparent;
+}
+
+.bookings__nav-item.--active{
+    border-bottom:  0.25rem solid var(--bg-primary);
+}
+
