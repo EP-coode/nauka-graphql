@@ -1,27 +1,25 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700&display=swap');
 
 :root{
-  --bg-primary: #ffffff;
-  --bg-secondary: #0f20b6;
-  --font-primary: #ffffff;
-  --font-secondary: #000000;
-  --font-third: #45A29E;
-
-  --bg-primary-dark: #0B0C10;
-  --bg-secondary-dark: #1F2833;
-  --font-primary-dark: #C5C6C7;
-  --font-secondary-dark: #66FCF1;
-  --font-third-dark: #45A29E;
-
   --transition: 200ms
 }
 
 .dark{
-  color: var(--font-primary-dark);
-  background-color: var(--bg-primary-dark);
+  --bg-primary: #0B0C10;
+  --bg-secondary: #1F2833;
+  --font-primary: #C5C6C7;
+  --font-secondary: #66FCF1;
+  --font-third: #45A29E;
+  color: var(--font-primary);
+  background-color: var(--bg-primary);
 }
 
 .light{
+  --bg-primary: rgb(255, 255, 255);
+  --bg-secondary: rgb(7, 84, 156);
+  --font-primary: #000000;
+  --font-secondary: rgb(255, 255, 255);
+  --font-third: rgb(7, 118, 221);
   color: var(--font-primary);
   background-color: var(--bg-primary);
 }

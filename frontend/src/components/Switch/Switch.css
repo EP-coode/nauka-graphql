@@ -2,28 +2,30 @@
     position: relative;
     display: inline-flex;
     align-items: center;
-    background-color:  var(--bg-primary-dark);
+    background-color:  var(--bg-primary);
     width: 4rem;
     height: 2rem;
     border-radius: 1rem;
 }
 
-
-
 .switch.--on{
-    background-color: var(--font-third-dark);
+    background-color: var(--font-third);
 }
 
 .switch::after{
     content: "";
     display: block;
     position: absolute;
-    background-color: var(--font-secondary-dark);
+    background-color: var(--font-secondary);
     width: 1.5rem;
     height: 1.5rem;
     left: 0.5rem;
     border-radius: 100%;
     transition: var(--transition);
+}
+
+.light .switch::after{
+    background-color: var(--font-third);
 }
 
 

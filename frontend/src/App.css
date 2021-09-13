@@ -1,21 +1,27 @@
 main{
-    margin-top: 3.5rem;   
+    padding-top: 3.5rem;
+    min-height: 100vh;
 }
 
 .btn{
     background-color:  transparent;
     font: inherit;
-    border: 1px solid var(--font-secondary-dark);
+    border: 1px solid var(--font-secondary);
     border-radius: 3px;
     padding: 0.5rem 1rem;
     margin-right: 1rem;
-    color: var(--font-primary-dark);
+    color: var(--font-primary);
     cursor: pointer;
+}
+
+.light .btn{
+    border: 1px solid var(--bg-secondary);
 }
 
 .btn:hover,
 .btn:active{
-    background-color: rgb(1, 116, 116);
+    background-color: var(--font-third);
+    color: var(--bg-primary);
 }
 
 .form{
@@ -37,9 +43,9 @@ main{
 {
     font-size: 1.2rem;
     padding: 0.5rem;
-    background-color: var(--bg-primary-dark);
-    color: var(--font-primary-dark);
-    border: 1px solid var(--bg-secondary-dark);
+    background-color: var(--bg-primary);
+    color: var(--font-primary);
+    border: 1px solid var(--bg-secondary);
     border-radius: 5px;
 }
 

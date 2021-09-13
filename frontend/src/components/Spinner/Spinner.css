@@ -11,8 +11,8 @@
   height: 64px;
   margin: 8px;
   border-radius: 50%;
-  border: 6px solid var(--bg-secondary-dark);
-  border-color:  var(--bg-secondary-dark) transparent  var(--bg-secondary-dark) transparent;
+  border: 6px solid var(--bg-secondary);
+  border-color:  var(--bg-secondary) transparent  var(--bg-secondary) transparent;
   animation: lds-dual-ring 1.2s linear infinite;
 }
 

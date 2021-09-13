@@ -54,7 +54,7 @@ function BookingPage() {
     }, [])
 
 
-    let content = <Spinner />
+    let content = <Spinner className="bookings_spinner"/>
     if (!isLoading) {
         content = (
             <React.Fragment>

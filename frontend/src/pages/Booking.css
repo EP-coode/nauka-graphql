@@ -11,12 +11,18 @@
     font: inherit;
     border: none;
     background: transparent;
-    color: var(--font-primary-dark);
+    color: var(--font-primary);
     padding: 0.25rem 1rem;
     border-bottom: 0.25rem solid transparent;
 }
 
 .bookings__nav-item.--active{
-    border-bottom:  0.25rem solid var(--font-third-dark);
+    border-bottom:  0.25rem solid var(--font-third);
 }
 
+.bookings_spinner{
+  margin-top: 5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

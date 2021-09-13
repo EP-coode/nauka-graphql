@@ -6,8 +6,8 @@
     width: 100vw;
     height: 3.5rem;
     
-    background-color: var(--bg-secondary-dark);
-    border-bottom: 1px solid var(--bg-primary-dark);
+    background-color: var(--bg-secondary);
+    border-bottom: 1px solid var(--bg-primary);
 
     padding: 0 1rem;
 
@@ -19,13 +19,14 @@
 .main-nav__logo h1{
     margin: 0;
     font-size: 1.5rem;
-    color: var(--font-secondary-dark);
+    color: var(--font-secondary);
 }
 
 .main-nav__items ul{
     list-style: none;
     display: flex;
     flex-direction: row;
+    align-items: center;
 }
 
 .main-nav__items li{
@@ -35,11 +36,13 @@
 .main-nav__items a,
 .main-nav__items button{
     text-decoration: none;
-    color: var(--font-primary-dark);
+    color: var(--font-secondary);
     border: none;
     font: inherit;
     cursor: pointer;
     background-color: transparent;
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.5rem;
 }
 
 .main-nav__items a:hover,
@@ -48,7 +51,8 @@
 .main-nav__items button:hover,
 .main-nav__items button:active
 {
-    color: var(--font-secondary-dark);
+    background-color: var(--bg-primary);
+    color: var(--font-primary);
 }
 
 .main-nav__tcheme-switch{
