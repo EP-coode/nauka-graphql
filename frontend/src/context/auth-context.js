@@ -8,20 +8,31 @@ export const AuthContext = React.createContext({
 })
 
 function AuthProvider({ children }) {
-    const [token, setToken] = useState(null)
-    const [userId, setUserId] = useState(null)
-    const [tokenExp, setTokenExp] = useState(null)
+    const [token, setToken] = useState(localStorage.getItem('token', null))
+    const [userId, setUserId] = useState(localStorage.getItem('userId', null))
+    const [tokenExp, setTokenExp] = useState(localStorage.getItem('tokenExp', null))
 
     const login = (token, userId, tokenExpiration) => {
         setToken(token)
         setUserId(userId)
-        setTokenExp(tokenExpiration)
+        localStorage.setItem('token', token)
+        localStorage.setItem('userId', userId)
+        const tokenExp = new Date().getMilliseconds() + tokenExpiration * 3600 * 1000
+        setTokenExp(tokenExp)
+        localStorage.setItem('tokenExp', tokenExp)
     }
 
     const logout = () => {
         setToken(null)
         setUserId(null)
         setTokenExp(null)
+        localStorage.removeItem('token')
+        localStorage.removeItem('userId')
+        localStorage.removeItem('tokenExp')
+    }
+
+    if (tokenExp && tokenExp < new Date().getMilliseconds()) {
+        logout()
     }
 
     return (

@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from 'react';
+import React, { useContext, useState } from 'react';
 
 import { AuthContext } from '../context/auth-context';
 import '../App.css'
@@ -6,15 +6,14 @@ import './Auth.css'
 import makeRequest, { createUser, login } from '../graphql/queries';
 
 function AuthPage() {
-    const inputEmail = useRef(null)
-    const inputPasswd = useRef(null)
+    const [email, setEmail] = useState("")
+    const [password, setPass] = useState("")
     const [loginMode, setLoginMode] = useState(true)
+    const [errors, setErrors] = useState([])
     const authContext = useContext(AuthContext)
 
     const submitHandler = async e => {
         e.preventDefault()
-        const email = inputEmail.current.value
-        const password = inputPasswd.current.value
 
         if (email.trim().length === 0 || password.trim().length === 0) {
             return
@@ -30,27 +29,48 @@ function AuthPage() {
         }
 
         const data = await makeRequest('', requestBody)
-           
-        if (data.data.login.token) {
+        
+        if (data.data.login) {
             const { userId, token, tokenExpiration } = data.data.login
             authContext.login(token, userId, tokenExpiration)
         }
+
+        if (data.errors) {
+            setErrors(data.errors)
+        }
+
+    }
+
+    const handleEmailChange = e => {
+        setEmail(e.target.value)
+        setErrors([])
+    }
+    const handlePassChange = e => {
+        setPass(e.target.value)
+        setErrors([])
     }
 
     const handleSwitchMode = e => {
         e.preventDefault()
         setLoginMode(prev => !prev)
+        setErrors([])
     }
+
+    const errorsComp = errors.map(error => (
+        <li className="form__error" key={error.message}>
+            {error.message}
+        </li>
+    ))
 
     return (
         <form className="form auth-form">
             <div className="form__control">
                 <label htmlFor="email">E-mail</label>
-                <input type="email" id="email" ref={inputEmail}></input>
+                <input type="email" id="email" onChange={handleEmailChange} value={email}></input>
             </div>
             <div className="form__control">
                 <label htmlFor="password">password</label>
-                <input type="password" id="password" ref={inputPasswd}></input>
+                <input type="password" id="password" onChange={handlePassChange} value={password}></input>
             </div>
             <div className="form__actions">
                 <button className="btn" type="button" onClick={handleSwitchMode}>
@@ -60,6 +80,9 @@ function AuthPage() {
                     {loginMode ? "Login" : "Sign up"}
                 </button>
             </div>
+            <ul className="form__errors">
+                {errorsComp}
+            </ul>
         </form>
     )
 }

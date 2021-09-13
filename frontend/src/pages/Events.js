@@ -5,7 +5,7 @@ import Backdrop from '../components/Backdrop/Backdrop';
 import EventList from '../components/Events/EventList/EventList'
 import Spinner from '../components/Spinner/Spinner';
 import { AuthContext } from '../context/auth-context';
-import makeRequest, { bookEvent, createEvent, getEvents } from '../graphql/queries'
+import makeRequest, { createEvent, getEvents } from '../graphql/queries'
 import './Events.css'
 
 function EventsPage() {
@@ -18,6 +18,7 @@ function EventsPage() {
     const [events, setEvents] = useState([])
     const authContext = useContext(AuthContext)
     const mounted = useRef(false)
+    const [message, setMessage] = useState("")
 
     const createEventClickHandler = e => {
         e.preventDefault()
@@ -42,14 +43,26 @@ function EventsPage() {
 
         const event = { title, description, price, date }
 
-        const data = await makeRequest(authContext.token, createEvent(title, description, price, date))
+        try {
+            const data = await makeRequest(authContext.token, createEvent(title, description, price, date))
 
-        event._id = data.data.createEvent._id
-        event.creator = {
-            _id: authContext.userId,
+            if (data.data.createEvent) {
+                event._id = data.data.createEvent._id
+                event.creator = {
+                    _id: authContext.userId,
+                }
+
+                setEvents(events => [...events, event])
+                setMessage('Event created')
+            }
+
+            if (data.errors) {
+                setMessage(data.errors[0].message)
+            }
         }
-        
-        setEvents(events => [...events, event])
+        catch (e) {
+            setMessage('Problem with adding event')
+        }
     }
 
     const fetchEvents = async () => {
@@ -65,9 +78,6 @@ function EventsPage() {
         setCreatingEvent(false)
     }
 
-    const bookEventHandler = async eventId => {
-        makeRequest(authContext.token, bookEvent(eventId))
-    }
 
     useEffect(() => {
         mounted.current = true
@@ -117,9 +127,22 @@ function EventsPage() {
                     </button>
                 </div>
             }
+            {
+                message &&
+                <React.Fragment>
+                    <Backdrop />
+                    <Modal
+                        title="Info"
+                        confirmText="OK"
+                        onConfirm={() => setMessage(null)}
+                    >
+                        <p>{message}</p>
+                    </Modal>
+                </React.Fragment>
+            }
             {isLoading ?
                 <Spinner className="events__spinner" />
-                : <EventList events={events} onBookEvent={bookEventHandler}
+                : <EventList events={events} onMessage={setMessage}
                 />}
         </div>
     )
