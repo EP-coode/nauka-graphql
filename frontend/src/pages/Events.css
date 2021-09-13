@@ -1,6 +1,6 @@
 .events-control{
     text-align: center;
-    border: 1px solid var(--bg-primary);
+    border: 1px solid var(--bg-secondary-dark);
     padding: 1rem;
     margin: 5rem auto;
     width: 30rem;
@@ -9,6 +9,11 @@
 
 .events form{
     text-align: left;
+}
+
+.events .form__control label
+{
+    text-transform: capitalize;
 }
 
 .events__spinner{

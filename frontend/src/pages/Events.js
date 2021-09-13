@@ -94,7 +94,7 @@ function EventsPage() {
             {
                 creatingEvent &&
                 <Modal
-                    title="Title"
+                    title="New Event"
                     onCancel={modalCancelHandler}
                     onConfirm={modalConfirmHandler}
                 >

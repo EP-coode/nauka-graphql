@@ -1,11 +1,33 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { NavLink } from 'react-router-dom'
 
 import { AuthContext } from '../../context/auth-context'
+import { ThemeContext, THEMES } from '../../context/theme-provider'
+import Switch from '../Switch/Switch'
 import './MainNavigation.css'
 
 function MainNavigation() {
     const authContext = useContext(AuthContext)
+    const themeContext = useContext(ThemeContext)
+    const [darkmode, setDarkmode] = useState(themeContext.theme === THEMES.DARK)
+
+    const handleSwitchThemeClick = () => {
+        switch (themeContext.theme) {
+            case THEMES.DARK:
+                themeContext.setTheme(THEMES.LIGHT)
+                break;
+            case THEMES.LIGHT:
+                themeContext.setTheme(THEMES.DARK)
+                break;
+            default:
+                themeContext.setTheme(THEMES.DARK)
+        }
+    }
+
+    const handleToggleDarkMode = () => {
+        handleSwitchThemeClick()
+        setDarkmode(prev => !prev)
+    }
 
     return (
         <header className="main-nav">
@@ -45,6 +67,9 @@ function MainNavigation() {
                     }
                 </ul>
             </nav>
+            <div className="main-nav__tcheme-switch">
+                <Switch value={darkmode} onToggle={handleToggleDarkMode} />
+            </div>
         </header>
     )
 }

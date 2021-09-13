@@ -6,7 +6,8 @@
     width: 100vw;
     height: 3.5rem;
     
-    background-color: var(--bg-primary);
+    background-color: var(--bg-secondary-dark);
+    border-bottom: 1px solid var(--bg-primary-dark);
 
     padding: 0 1rem;
 
@@ -18,7 +19,7 @@
 .main-nav__logo h1{
     margin: 0;
     font-size: 1.5rem;
-    color: white;
+    color: var(--font-secondary-dark);
 }
 
 .main-nav__items ul{
@@ -34,7 +35,7 @@
 .main-nav__items a,
 .main-nav__items button{
     text-decoration: none;
-    color: #000000;
+    color: var(--font-primary-dark);
     border: none;
     font: inherit;
     cursor: pointer;
@@ -47,5 +48,11 @@
 .main-nav__items button:hover,
 .main-nav__items button:active
 {
-    color: #f0f353;
+    color: var(--font-secondary-dark);
+}
+
+.main-nav__tcheme-switch{
+    flex-grow: 1;
+    margin: 3rem;
+    text-align: right;
 }

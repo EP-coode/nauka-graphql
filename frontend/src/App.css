@@ -3,14 +3,13 @@ main{
 }
 
 .btn{
-    background-color:  var(--bg-primary);
+    background-color:  transparent;
     font: inherit;
-    border: 1px solid rgb(18, 172, 172);
+    border: 1px solid var(--font-secondary-dark);
     border-radius: 3px;
     padding: 0.5rem 1rem;
     margin-right: 1rem;
-    box-shadow: 1px 1px 1px rgb(8, 194, 241);
-    color: white;
+    color: var(--font-primary-dark);
     cursor: pointer;
 }
 
@@ -31,6 +30,17 @@ main{
 {
     width: 100%;
     display: block;
+}
+
+.form__control input,
+.form__control textarea
+{
+    font-size: 1.2rem;
+    padding: 0.5rem;
+    background-color: var(--bg-primary-dark);
+    color: var(--font-primary-dark);
+    border: 1px solid var(--bg-secondary-dark);
+    border-radius: 5px;
 }
 
 .form__control label

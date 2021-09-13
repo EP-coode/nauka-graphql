@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+// nazwa pliku wproawadza zamiesznie powinno być auth-provider
+
 export const AuthContext = React.createContext({
     token: null,
     userId: null,

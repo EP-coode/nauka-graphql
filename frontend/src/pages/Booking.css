@@ -1,5 +1,5 @@
 .bookings{
-
+    
 }
 
 .bookings__nav{
@@ -11,12 +11,12 @@
     font: inherit;
     border: none;
     background: transparent;
-    color: black;
+    color: var(--font-primary-dark);
     padding: 0.25rem 1rem;
     border-bottom: 0.25rem solid transparent;
 }
 
 .bookings__nav-item.--active{
-    border-bottom:  0.25rem solid var(--bg-primary);
+    border-bottom:  0.25rem solid var(--font-third-dark);
 }
 

@@ -8,13 +8,15 @@ import MainNavigation from './components/Navigation/MainNavigation';
 import { AuthContext } from './context/auth-context'
 
 import './App.css';
+import { ThemeContext } from './context/theme-provider';
 
 function App() {
   const authContext = useContext(AuthContext)
+  const themeContext = useContext(ThemeContext)
 
   return (
     <BrowserRouter >
-      <React.Fragment>
+      <div className={`${themeContext.theme}`}>
         <MainNavigation />
         <main>
           <Switch>
@@ -26,7 +28,7 @@ function App() {
             {!authContext.token && <Redirect to="/auth" exact />}
           </Switch>
         </main>
-      </React.Fragment>
+      </div>
     </BrowserRouter >
   );
 }

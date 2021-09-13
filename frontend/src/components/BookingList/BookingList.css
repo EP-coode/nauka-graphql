@@ -8,8 +8,9 @@
 
 .bookings__item{
     margin: 1rem 0;
-    padding: 0.5rem;
-    border: 1px solid var(--bg-primary);
+    padding: 0.7rem;
+    background-color: var(--bg-secondary-dark);
+    border-radius: 5px;
 
     display: flex;
     justify-content: space-between;

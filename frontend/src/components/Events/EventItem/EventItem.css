@@ -2,8 +2,8 @@
 .event__list-item{
     margin: 1rem 0;
     padding: 1rem;
-    border: 1px solid var(--bg-primary);
-    border-radius: 3px;
+    background-color: var(--bg-secondary-dark);
+    border-radius: 5px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -12,7 +12,7 @@
 .event__list-item h1{
     margin: 0;
     font-size: 1.6rem;
-    color: var(--bg-primary);
+    color: var(--font-secondary-dark);
 }
 
 .event__list-item h2{

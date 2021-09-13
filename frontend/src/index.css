@@ -1,9 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700&display=swap');
+
 :root{
-  --bg-primary: rgb(1, 128, 50);
+  --bg-primary: #ffffff;
+  --bg-secondary: #0f20b6;
+  --font-primary: #ffffff;
+  --font-secondary: #000000;
+  --font-third: #45A29E;
+
+  --bg-primary-dark: #0B0C10;
+  --bg-secondary-dark: #1F2833;
+  --font-primary-dark: #C5C6C7;
+  --font-secondary-dark: #66FCF1;
+  --font-third-dark: #45A29E;
+
+  --transition: 200ms
+}
+
+.dark{
+  color: var(--font-primary-dark);
+  background-color: var(--bg-primary-dark);
+}
+
+.light{
+  color: var(--font-primary);
+  background-color: var(--bg-primary);
 }
 
 body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+  font-family: 'Lato', sans-serif;
 }

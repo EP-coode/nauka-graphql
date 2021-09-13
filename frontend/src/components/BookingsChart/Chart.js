@@ -1,6 +1,8 @@
 import React from 'react';
 import { Bar } from 'react-chartjs-2'
 
+import "./Chart.css"
+
 const BOOKINGS_BUCKETS = {
     'Cheap': 1,
     'Normal': 2,
@@ -41,13 +43,13 @@ function ChartElement({ bookings }) {
             }
         ]
     }
-    
+
 
     console.log(output);
     return (
-        <div>
+        <div className="chart-container">
             Chart
-            <Bar data={chartData} options={options}/>
+            <Bar data={chartData} options={options} />
         </div>
     )
 }
