@@ -5,6 +5,7 @@ import Backdrop from '../components/Backdrop/Backdrop';
 import EventList from '../components/Events/EventList/EventList'
 import Spinner from '../components/Spinner/Spinner';
 import { AuthContext } from '../context/auth-context';
+import makeRequest, { bookEvent, createEvent, getEvents } from '../graphql/queries'
 import './Events.css'
 
 function EventsPage() {
@@ -23,7 +24,7 @@ function EventsPage() {
         setCreatingEvent(true)
     }
 
-    const modalConfirmHandler = e => {
+    const modalConfirmHandler = async e => {
         setCreatingEvent(false)
         const title = inputTitleRef.current.value
         const price = +inputPriceRef.current.value // trick to convert string to number fast
@@ -39,121 +40,33 @@ function EventsPage() {
             return
         }
 
-        const event = { title, price, date, description }
+        const event = { title, description, price, date }
 
-        const requestBody = {
-            query: `
-                mutation{
-                    createEvent(eventInput: {title: "${title}",description:"${description}",price: ${price}, date: "${date}"}){
-                        _id
-                    }
-                }
-            `
+        const data = await makeRequest(authContext.token, createEvent(title, description, price, date))
+
+        event._id = data.data.createEvent._id
+        event.creator = {
+            _id: authContext.userId,
         }
-
-        fetch('http://localhost:3000/graphql', {
-            method: 'POST',
-            body: JSON.stringify(requestBody),
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${authContext.token}`
-            }
-        }).then(res => {
-            if (res.status !== 200 && res.status !== 201) {
-                throw new Error('Fail')
-            }
-            return res.json()
-        }).then(resData => {
-            console.log(resData.data.events);
-            event._id = authContext.userId
-            event.creator = {
-                _id: authContext.userId,
-            }
-            setEvents(events => [...events, event])
-        }).catch(err => {
-            console.error(err)
-        })
+        
+        setEvents(events => [...events, event])
     }
 
-    const fetchEvents = () => {
+    const fetchEvents = async () => {
         setIsLoading(true)
-        const requestBody = {
-            query: `
-                query{
-                    events{
-                        _id
-                        title
-                        description
-                        date
-                        price
-                        creator{
-                            _id
-                            email
-                        }
-                    }
-                }
-            `
-        }
 
-        fetch('http://localhost:3000/graphql', {
-            method: 'POST',
-            body: JSON.stringify(requestBody),
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${authContext.token}`
-            }
-        }).then(res => {
-            if (res.status !== 200 && res.status !== 201) {
-                throw new Error('Fail')
-            }
-            return res.json()
-        }).then(resData => {
-            if (mounted) {
-                console.log(resData);
-                setEvents(resData.data.events)
-                setIsLoading(false)
-            }
-        }).catch(err => {
-            console.error(err)
-            setIsLoading(false)
-        })
+        const data = await makeRequest(authContext.token, getEvents())
+
+        setEvents(data.data.events)
+        setIsLoading(false)
     }
 
     const modalCancelHandler = e => {
         setCreatingEvent(false)
     }
 
-    const bookEventHandler = eventId => {
-        console.log(eventId);
-        const requestBody = {
-            query: `
-                mutation{
-                    bookEvent(eventId: "${eventId}"){
-                        _id
-                        createdAt
-                        updatedAt
-                    }
-                }
-            `
-        }
-
-        fetch('http://localhost:3000/graphql', {
-            method: 'POST',
-            body: JSON.stringify(requestBody),
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${authContext.token}`
-            }
-        }).then(res => {
-            if (res.status !== 200 && res.status !== 201) {
-                throw new Error('Fail')
-            }
-            return res.json()
-        }).then(resData => {
-            console.log(resData);
-        }).catch(err => {
-            console.error(err)
-        })
+    const bookEventHandler = async eventId => {
+        makeRequest(authContext.token, bookEvent(eventId))
     }
 
     useEffect(() => {

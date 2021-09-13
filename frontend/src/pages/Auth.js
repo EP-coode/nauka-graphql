@@ -3,6 +3,7 @@ import React, { useContext, useRef, useState } from 'react';
 import { AuthContext } from '../context/auth-context';
 import '../App.css'
 import './Auth.css'
+import makeRequest, { createUser, login } from '../graphql/queries';
 
 function AuthPage() {
     const inputEmail = useRef(null)
@@ -10,7 +11,7 @@ function AuthPage() {
     const [loginMode, setLoginMode] = useState(true)
     const authContext = useContext(AuthContext)
 
-    const submitHandler = e => {
+    const submitHandler = async e => {
         e.preventDefault()
         const email = inputEmail.current.value
         const password = inputPasswd.current.value
@@ -22,51 +23,18 @@ function AuthPage() {
         let requestBody;
 
         if (loginMode) {
-            requestBody = {
-                query: `
-                query{
-                    login(email: "${email}",password:"${password}"){
-                        userId
-                        token
-                        tokenExpiration
-                    }
-                }
-            `
-            }
+            requestBody = login(email, password)
         }
         else {
-            requestBody = {
-                query: `
-                mutation{
-                    createUser(userInput: {email: "${email}",password:"${password}"}){
-                        _id
-                        email
-                    }
-                }
-            `
-            }
+            requestBody = createUser(email, password)
         }
 
-        fetch('http://localhost:3000/graphql', {
-            method: 'POST',
-            body: JSON.stringify(requestBody),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }).then(res => {
-            if (res.status !== 200 && res.status !== 201) {
-                throw new Error('Fail')
-            }
-            return res.json()
-        }).then(resData => {
-            console.log(resData);
-            if (resData.data.login.token) {
-                const { userId, token, tokenExpiration } = resData.data.login
-                authContext.login(token, userId, tokenExpiration)
-            }
-        }).catch(err => {
-            console.error(err)
-        })
+        const data = await makeRequest('', requestBody)
+           
+        if (data.data.login.token) {
+            const { userId, token, tokenExpiration } = data.data.login
+            authContext.login(token, userId, tokenExpiration)
+        }
     }
 
     const handleSwitchMode = e => {

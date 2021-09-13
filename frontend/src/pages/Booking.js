@@ -5,6 +5,7 @@ import Spinner from '../components/Spinner/Spinner';
 import BookingList from '../components/BookingList/BookingList';
 import './Booking.css'
 import Chart from '../components/BookingsChart/Chart';
+import makeRequest, { cancelBooking, getBookings } from '../graphql/queries';
 
 function BookingPage() {
     const authContext = useContext(AuthContext)
@@ -13,85 +14,26 @@ function BookingPage() {
     const mounted = useRef(false)
     const [outputType, setOutputType] = useState('list')
 
-    const fetchBookings = () => {
+    const fetchBookings = async () => {
         setIsLoading(true)
-        const requestBody = {
-            query: `
-                query{
-                    bookings{
-                        _id
-                        createdAt
-                        event{
-                            _id
-                            title
-                            date
-                            price
-                        }
-                    }
-                }
-            `
+        const data = await makeRequest(authContext.token, getBookings())
+
+        if (mounted) {
+            setBookings(data.data.bookings)
         }
 
-        fetch('http://localhost:3000/graphql', {
-            method: 'POST',
-            body: JSON.stringify(requestBody),
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${authContext.token}`
-            }
-        }).then(res => {
-            if (res.status !== 200 && res.status !== 201) {
-                throw new Error('Fail')
-            }
-            return res.json()
-        }).then(resData => {
-            if (mounted) {
-                console.log(resData);
-                setBookings(resData.data.bookings)
-                setIsLoading(false)
-            }
-        }).catch(err => {
-            console.error(err)
-        })
+        setIsLoading(false)
     }
 
-    const handleDeleteBooking = bookingId => {
+    const handleDeleteBooking = async bookingId => {
         setIsLoading(true)
-        const requestBody = {
-            query: `
-                mutation CancelBooking($id: ID!) {
-                    cancelBooking(bookingId: $id){
-                        _id
-                        title
-                    }
-                }
-            `,
-            variables: {
-                id: bookingId
-            }
+        const data = await makeRequest(authContext.token, cancelBooking(bookingId))
+
+        if (mounted) {
+            setBookings(bookings => bookings.filter(booking => booking._id !== bookingId))
         }
 
-        fetch('http://localhost:3000/graphql', {
-            method: 'POST',
-            body: JSON.stringify(requestBody),
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${authContext.token}`
-            }
-        }).then(res => {
-            if (res.status !== 200 && res.status !== 201) {
-                throw new Error('Fail')
-            }
-            return res.json()
-        }).then(resData => {
-            setIsLoading(false)
-            if (mounted) {
-                console.log(resData);
-                setBookings(bookings => bookings.filter(booking => booking._id !== bookingId))
-            }
-        }).catch(err => {
-            console.error(err)
-        })
+        setIsLoading(false)
     }
 
     const changeTabHandler = outputType => {
